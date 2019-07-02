@@ -1,0 +1,5 @@
+.slide {
+  .slide-wrapper {display:flex;
+    > div {width: 100%;display: flex; flex-shrink:0; position: relative;}
+  }
+}
