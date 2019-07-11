@@ -10,9 +10,14 @@ export default class Slider extends React.Component {
     }
   }
   imageLength = this.props.data.length;
-  size;
+  size = 0;
   componentDidMount() {
+    this.getSlideSize();
+    window.addEventListener("resize", this.getSlideSize);
+  }
+  getSlideSize = () => {
     this.size = document.querySelector(".slide-wrapper").clientWidth;
+    this.slideMove(this.state.index)
   }
   prevNext = (num) => {
     const {index} = this.state;
@@ -46,7 +51,7 @@ export default class Slider extends React.Component {
     const {next,prev} = this._renderBtn()
     const {nav} = this._renderNav()
     const duration = (this.props.duration / 1000) + "s"
-    const x = this.state.index * this.size
+    const x = this.state.index * this.size;
     const sliderStyle = {
       transition:"transform " + duration,
       transform: `translate(${-x}px,0px)` 
