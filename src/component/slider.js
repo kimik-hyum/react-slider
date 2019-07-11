@@ -9,29 +9,31 @@ export default class Slider extends React.Component {
       active:true
     }
   }
-  imageLength = this.props.data.length-1;
-  slideMove = (number) => {
-    //let idx = (index + dire + len) % len;
-    let index = this.state.index + number;
-    if(index < 0){
-      index = this.imageLength;
-    }else if(index > this.imageLength){
-      index = 0;
-    }
+  imageLength = this.props.data.length;
+  size;
+  componentDidMount() {
+    this.size = document.querySelector(".slide-wrapper").clientWidth;
+  }
+  prevNext = (num) => {
+    const {index} = this.state;
+    const {imageLength} = this;
+    const idx = (index + num + imageLength) % imageLength;
+    return idx;
+  }
+  slideMove = (index) => {
     this.setState({
-      index:index
+      index
     })
   }
   _renderBtn = () => ({
-    next:<button onClick={() => this.slideMove(1)}>Next</button>,
-    prev:<button onClick={() => this.slideMove(-1)}>Prev</button>
+    next:<button onClick={() => this.slideMove(this.prevNext(1))}>Next</button>,
+    prev:<button onClick={() => this.slideMove(this.prevNext(-1))}>Prev</button>
   })
   _renderNav = () => ({
     nav:<div className="slide-nav">
       {this.props.data.map((item,index) => {
-        return <button key={index}>{index+1}</button>
+        return <button key={index} onClick={() => this.slideMove(index)}>{index+1}</button>
       })}
-
     </div>
   })
   _renderItem(data){
@@ -43,11 +45,17 @@ export default class Slider extends React.Component {
     const {data} = this.props;
     const {next,prev} = this._renderBtn()
     const {nav} = this._renderNav()
+    const duration = (this.props.duration / 1000) + "s"
+    const x = this.state.index * this.size
+    const sliderStyle = {
+      transition:"transform " + duration,
+      transform: `translate(${-x}px,0px)` 
+    }
     return (
       <div className="slide">
         {prev}
         {next}
-        <div className="slide-wrapper">
+        <div className="slide-wrapper" style={sliderStyle}>
           {
             data.map((item,index) => {
               return this._renderItem({item,index})

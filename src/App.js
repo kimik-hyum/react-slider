@@ -3,16 +3,16 @@ import './App.css';
 import ReactkimikSlider from "./component/slider";
 import './scss/style.scss';
 class App extends React.Component {
-  test(data,index){
+  renderItem(data,index){
     return (
-      <div key={index}>{data}</div>
+      <div key={index}><img src={data} alt=""/></div>
     )
   };
   render() {
-    const infor = ["1","2","3","4","5"]
+    const infor = ["https://bxslider.com/assets/images/plant.jpg","https://bxslider.com/assets/images/daisies.jpg","https://bxslider.com/assets/images/succulents.jpg"]
     return (
       <div className="App">
-        <ReactkimikSlider data={infor} item={this.test}>
+        <ReactkimikSlider data={infor} item={this.renderItem} duration={300}>
         </ReactkimikSlider>
       </div>
     );
