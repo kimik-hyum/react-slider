@@ -3,20 +3,23 @@ import React from 'react';
 export default class Slider extends React.Component {
   constructor(props){
     super(props);
+    this.slider = React.createRef();
+    this.imageLength = this.props.data.length;
+    this.size = 0;
     this.state = {
       index:props.startIndex,
       sliding:false,
       active:true
     }
   }
-  imageLength = this.props.data.length;
-  size = 0;
+  
+  
   componentDidMount() {
     this.getSlideSize();
     window.addEventListener("resize", this.getSlideSize);
   }
   getSlideSize = () => {
-    this.size = document.querySelector(".slide-wrapper").clientWidth;
+    this.size = this.slider.current.offsetWidth;
     this.slideMove(this.state.index)
   }
   prevNext = (num) => {
@@ -60,7 +63,7 @@ export default class Slider extends React.Component {
       <div className="slide">
         {prev}
         {next}
-        <div className="slide-wrapper" style={sliderStyle}>
+        <div className="slide-wrapper" style={sliderStyle} ref={this.slider}>
           {
             data.map((item,index) => {
               return this._renderItem({item,index})
