@@ -6,6 +6,8 @@ export default class Slider extends React.Component {
     this.slider = React.createRef();
     this.imageLength = this.props.data.length;
     this.size = 0;
+    this.touchStartX = 0;
+    this.touchMoveX = 0;
     this.state = {
       index:props.startIndex,
       sliding:false,
@@ -48,6 +50,22 @@ export default class Slider extends React.Component {
     const {item} = this.props;
     return item(data.item,data.index)
   }
+  onSliderTouchStart = (e) => {
+    const touches = e.touches[0];
+    this.touchStartX = touches.pageX
+   
+  }
+  onSliderTouchMove = (e) => {
+    const touches = e.touches[0];
+    this.touchMoveX = this.touchStartX - touches.pageX;
+  }
+  onSliderTouchEnd = (e) => {
+    if(this.touchMoveX > 100){
+      this.slideMove(this.prevNext(1))
+    }else if(this.touchMoveX){
+      this.slideMove(this.prevNext(-1))
+    }
+  }
 
   render(){
     const {data} = this.props;
@@ -63,7 +81,7 @@ export default class Slider extends React.Component {
       <div className="slide">
         {prev}
         {next}
-        <div className="slide-wrapper" style={sliderStyle} ref={this.slider}>
+        <div className="slide-wrapper" style={sliderStyle} ref={this.slider} onTouchStart={this.onSliderTouchStart} onTouchMove={this.onSliderTouchMove} onTouchEnd={this.onSliderTouchEnd}>
           {
             data.map((item,index) => {
               return this._renderItem({item,index})
