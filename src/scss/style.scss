@@ -1,5 +1,7 @@
 .slide { overflow:hidden;
   .slide-wrapper {display:flex; 
-    > div {width: 100%;display: flex; flex-shrink:0; position: relative;}
+    > div {width: 100%;display: flex; flex-shrink:0; position: relative;
+      img {width: 100%;}
+    }
   }
 }
